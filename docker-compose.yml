@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    container_name: mysql8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: tomi_tech_24
+    ports:
+      - "3306:3306"
+    command: --init-file /docker-entrypoint-initdb.d/create.sql
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./create.sql:/docker-entrypoint-initdb.d/create.sql
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mysql_data:
+    driver: local
+  mongo-data:
